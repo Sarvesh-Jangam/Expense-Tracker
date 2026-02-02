@@ -12,22 +12,25 @@ import SignUp from "./pages/auth/SignUp";
 import Home from "./pages/DashBoard/Home";
 import Income from "./pages/DashBoard/Income";
 import Expense from "./pages/DashBoard/Expense";
+import UserProvider from "./context/UserContextProvider";
 
 function App() {
 
   return (
     <>
-      <Router>
-          <Routes>
-            <Route path="/" element={<Root />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Home />} />
-            <Route path="/income" element={<Income />} />
-            <Route path="/expense" element={<Expense />} />
+    <UserProvider>
+        <Router>
+            <Routes>
+              <Route path="/" element={<Root />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/dashboard" element={<Home />} />
+              <Route path="/income" element={<Income />} />
+              <Route path="/expense" element={<Expense />} />
 
-          </Routes>
-      </Router>
+            </Routes>
+        </Router>
+      </UserProvider>
     </>
   )
 }

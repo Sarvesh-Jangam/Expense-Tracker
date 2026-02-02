@@ -6,20 +6,23 @@ import {
   loginUser,
   getUserInfo
 } from "../controllers/authController";
+import { uploadOnCloudinary } from "../utils/cloudinary";
 
 const router=express.Router();
 
 router.post("/register", registerUser);
 router.post("/loginUser", loginUser);
 router.get("/getUserInfo", protect, getUserInfo);
-router.post("/upload-image",upload.single("profile-img"),(req,res)=>{
+router.post("/upload-image",upload.single("profile-img"),async (req,res)=>{
   if(!req.file){
     return res.status(400).json({message: "No file atttached"});
   }
-  const imageUrl=`${req.protocol}://${req.get("host")}/uploads/${
+  const imageUrl=`${process.cwd()}/uploads/${
     req.file?.filename
   }`;
-  res.status(200).json({imageUrl});
+  const image=await uploadOnCloudinary(imageUrl);
+  res.status(200).json({imageUrl: image?.secure_url});
+
 })
 
 export default router;

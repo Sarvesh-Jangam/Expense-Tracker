@@ -57,17 +57,17 @@ export const loginUser=async (req:any,res:any)=>{
     if(!(await existingUser.comparePassword(password))){
       return res.status(400).json({message: "Invalid password, try again."});
     }
-
+    const { password: _, ...safeUser } = existingUser.toObject();
     res.status(200).json({
-      id: existingUser._id,
-      user: existingUser,
-      token: await generateToken(existingUser._id)
+      id: safeUser._id,
+      user: safeUser,
+      token: await generateToken(safeUser._id)
     });
   }catch(error: any){
     res
     .status(500)
     .json({
-      message: `Error registering user ${email}`,
+      message: `Error logging in user ${email}`,
       error:error.message,
     })
   }

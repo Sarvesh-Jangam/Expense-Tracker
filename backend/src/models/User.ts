@@ -33,6 +33,18 @@ const userSchema= new mongoose.Schema<IUser>({
   },
 },{timestamps:true})
 
+userSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    delete (ret as any).password;
+    delete (ret as any).__v;
+
+    // ret.id = ret._id;
+    // delete ret._id;
+
+    return ret;
+  },
+});
+
 //hash password before saving
 userSchema.pre("save",async function(){
   if(!this.isModified('password')) return;

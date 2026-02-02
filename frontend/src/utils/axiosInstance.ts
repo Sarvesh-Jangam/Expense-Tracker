@@ -3,7 +3,7 @@ import { BASE_URL } from "./apiPaths";
 
 const axiosInstance=axios.create({
   baseURL: BASE_URL,
-  timeout: 1000,
+  timeout: 5000,
   headers:{
     "Content-Type": "application/json",
     "Accept": "application/json",
@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
   (config)=>{
     const accessToken=localStorage.getItem("token");
     if(accessToken){
-      config.headers.Auhorization=`Bearer ${accessToken}`
+      config.headers.Authorization=`Bearer ${accessToken}`;
     }
     return config;
   },
@@ -42,6 +42,9 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }else if(error.code==="ECONNABORTED"){
       console.error("Request timeout. Please try again.");
+    }
+    else if(error.code==="ECONNREFUSED"){
+      console.error("Backend Server not active");
     }
     return Promise.reject(error);
   }

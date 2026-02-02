@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, type InputEvent } from 'react'
 import {LuUser, LuUpload, LuTrash} from "react-icons/lu"
 
 const ProfilePhotoSelector = ({image,setImage}) => {
@@ -13,12 +13,16 @@ const ProfilePhotoSelector = ({image,setImage}) => {
 
       //generate preview url from the file
       const preview=URL.createObjectURL(file);
+      
       setPreviewUrl(preview);
     }
   }
   const handleRemoveImage=()=>{
     setImage(null);
     setPreviewUrl(null);
+    if(inputRef.current){
+      inputRef.current.value=""; // reset
+    }
   };
   const onChooseFile=()=>{
     inputRef.current.click();
