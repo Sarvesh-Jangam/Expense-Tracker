@@ -3,12 +3,15 @@ import { Income } from "../models/Income"
 import xlsx from "xlsx";
 import { Response, response } from "express";
 import path from "path";
+import fs from "fs";
+import moment from "moment";
+
 // Add income source
 export const addIncome=async (req: any,res: any)=>{
   const userId=req.user.id;
 
   try{
-    const {source,amount,date} =req.body;
+    const {source,amount,date,icon} =req.body;
     if(!source || !amount || !date){
       res.status(400).json({message: "Input all the required fields."});
     }
@@ -17,7 +20,8 @@ export const addIncome=async (req: any,res: any)=>{
       userId,
       source,
       amount,
-      date: new Date(date).toLocaleString('en-In')
+      icon,
+      date: new Date(date)
     });
 
     await newIncome.save();
@@ -76,13 +80,40 @@ export const downloadIncomeExcel=async (req:any,res:Response)=>{
         Source: i.source,
         Amount: i.amount,
         Date: i.date,
+        Icon: i.icon || "",
+        CreatedAt: moment(i.createdAt).format("DD MMM YYYY"),
       })
     );
     const wb=xlsx.utils.book_new();
     const ws=xlsx.utils.json_to_sheet(data);
     xlsx.utils.book_append_sheet(wb,ws,"Income");
-    xlsx.writeFile(wb,path.join(process.cwd(),"uploads","income_details.xlsx"));
-    res.download(path.join(process.cwd(),"uploads","income_details.xlsx"));
+    const uploadsDir = path.join(process.cwd(), "uploads");
+    const filePath = path.join(
+      process.cwd(),
+      "uploads",
+      "income_details.xlsx"
+    );
+
+    // Ensure uploads directory exists
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    
+
+    xlsx.writeFile(wb,filePath);
+    // Download + cleanup
+    res.download(filePath, "expense_details.xlsx", (err) => {
+      if (err) {
+        console.error("Error during file download:", err);
+      }
+
+      // ✅ Always delete file after response
+      fs.unlink(filePath, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error("Error deleting file:", unlinkErr);
+        }
+      });
+    });
   } catch (error:any) {
     res.status(500).json({message: "Server Error",error:error.message});
   }

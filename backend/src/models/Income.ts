@@ -7,6 +7,7 @@ const incomeSchema=new mongoose.Schema({
     ref:User,
     required:true
   },
+  icon:{type:String},
   source: {type: String, required: true},
   amount: {type: Number, required: true},
   date: {type: Date, default: Date.now}

@@ -9,6 +9,7 @@ interface UserProviderProps {
 const UserProvider=({children}:UserProviderProps)=>{
   const [user, setUser]=useState<any>(null);
 
+
   //Function to update user data
   const updateUser=(userData)=>{
     setUser(userData);

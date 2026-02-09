@@ -17,14 +17,14 @@ const Input = ({value, onChange, label, placeholder, type}:inputProps) => {
 
   return (
     <div>
-      <label className='text-[13px] text-shadow-slate-800' htmlFor={label}>{label}</label>
+      <label className='text-[13px] text-shadow-slate-800'>{label}</label>
       <div className='input-box'>
         <input
           id={label}
           name={label}
           type={type=='password'?(showPassword?'text':'password'): type}
           placeholder={placeholder}
-          className='w-full bg-transparent outline-none'
+          className='w-full bg-transparent outline-none text-sm md:text-base h-10'
           value={value}
           onChange={(e)=>onChange(e)}
           // onChange={onChange}
