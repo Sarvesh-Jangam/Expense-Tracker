@@ -13,12 +13,12 @@ const storage=multer.diskStorage({
 
 //file filter
 const fileFilter=(req:any,file:any,callback:any)=>{
-  const allowedTypes=["image/jpeg", 'image/png', "image/jpg"];
+  const allowedTypes=["image/jpeg", 'image/png', "image/jpg","application/pdf"];
   if(allowedTypes.includes(file.mimetype)){
     callback(null,true);
   }
   else{
-    callback(new Error("Only Jpeg or Png allowed"),false);
+    callback(new Error("Only Jpeg or Png allowed or PDF allowed."),false);
   }
 };
 

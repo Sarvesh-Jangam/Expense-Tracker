@@ -79,7 +79,7 @@ const Expense = () => {
     try {
       await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id));
       setOpenDeleteAlert({show:false, data:null});
-      toast.success("Income details deleted successfully.");
+      toast.success("Expense details deleted successfully.");
       fetchExpenseDetails();
     } catch (error:any) {
       console.error("Error deleting Expense:",error.response?.data?.message || error.message);

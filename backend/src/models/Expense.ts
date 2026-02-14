@@ -6,7 +6,9 @@ const expenseSchema=new mongoose.Schema({
   icon: {type:String},
   amount:{type:Number,required: true},
   category:{type: String,required:true},
-  date:{type: Date,default: Date.now}
+  date:{type: Date,default: Date.now},
+  source: {type:String},
+  rawText:{type:String}
 },{timestamps:true})
 
 export const Expense=mongoose.model("Expense",expenseSchema);
